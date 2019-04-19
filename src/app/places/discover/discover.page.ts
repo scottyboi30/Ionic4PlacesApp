@@ -1,24 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PlacesService } from '../places.service';
-import { Place } from '../offers/places.model';
+import { Place } from '../places.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-discover',
   templateUrl: './discover.page.html',
   styleUrls: ['./discover.page.scss'],
 })
-export class DiscoverPage implements OnInit {
+export class DiscoverPage implements OnInit, OnDestroy {
   loadedPlaces: Place[];
-  listedLoadingPlaces: Place[];
+  listedLoadedPlaces: Place[];
+  isLoading = false;
+  private placesSub: Subscription;
 
   constructor(public placesService: PlacesService) { }
 
   ngOnInit() {
-    this.loadedPlaces = this.placesService.places;
-    this.listedLoadingPlaces = this.placesService.places.splice(1);
+    this.placesSub = this.placesService.places.subscribe(places => {
+      this.loadedPlaces = places;
+      this.listedLoadedPlaces = this.loadedPlaces.slice(1);
+    });
   }
 
   onFilterChange(event) {
+  }
 
+  ngOnDestroy(): void {
+    if (this.placesSub)
+      this.placesSub.unsubscribe();
   }
 }

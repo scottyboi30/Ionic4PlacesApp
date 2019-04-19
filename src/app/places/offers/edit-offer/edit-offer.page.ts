@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { Place } from '../places.model';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Place } from '../../places.model';
 import { ActivatedRoute } from '@angular/router';
 import { PlacesService } from '../../places.service';
 import { NavController } from '@ionic/angular';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-offer',
   templateUrl: './edit-offer.page.html',
   styleUrls: ['./edit-offer.page.scss'],
 })
-export class EditOfferPage implements OnInit {
+export class EditOfferPage implements OnInit, OnDestroy {
   place: Place;
   form: FormGroup;
+  private placeSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,8 +29,12 @@ export class EditOfferPage implements OnInit {
         this.navCtrl.navigateBack('/places/tabs/offers');
         return;
       }
-      this.place = this.placesService.find(paramMap.get('placeId'));
-      this.setupForm();
+      this.placeSub = this.placesService
+        .find(paramMap.get('placeId'))
+        .subscribe(place => {
+          this.place = place;
+          this.setupForm();
+        });
     });
   }
 
@@ -37,5 +43,10 @@ export class EditOfferPage implements OnInit {
       title: ['', { validators: [Validators.email, Validators.required], updateOn: 'blur' }],
       description: ['', { validators: [Validators.minLength(6), Validators.required], updateOn: 'blur' }],
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.placeSub)
+      this.placeSub.unsubscribe();
   }
 }
