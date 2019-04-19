@@ -27,7 +27,8 @@ export class DiscoverPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.placesSub)
+    if (this.placesSub) {
       this.placesSub.unsubscribe();
+    }
   }
 }

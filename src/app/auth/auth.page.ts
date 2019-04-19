@@ -28,7 +28,7 @@ export class AuthPage implements OnInit {
     setTimeout(() => {
       loading.dismiss();
       this.router.navigateByUrl('/places/tabs/discover');
-    }, 2000)
+    }, 2000);
   }
 
   onSubmit(form: NgForm) {
@@ -39,10 +39,9 @@ export class AuthPage implements OnInit {
     const { email, password } = form.value;
 
     if (this.isLogin) {
-      //login
-    }
-    else {
-      //register
+      // login
+    } else {
+      // register
     }
   }
 

@@ -21,7 +21,7 @@ export class PlacesService {
     ),
     new Place(
       'p2',
-      "L'Amour Toujours",
+      'L\'Amour Toujours',
       'A romantic place in Paris!',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Paris_Night.jpg/1024px-Paris_Night.jpg',
       189.99,

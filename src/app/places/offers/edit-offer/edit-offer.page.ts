@@ -46,7 +46,8 @@ export class EditOfferPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.placeSub)
+    if (this.placeSub) {
       this.placeSub.unsubscribe();
+    }
   }
 }
